@@ -43,3 +43,5 @@ FROM $BASE_IMAGE
 COPY --from=builder /opt/llvm /opt/llvm
 ENV LLVM_ROOT=/opt/llvm
 ENV PATH=$LLVM_ROOT/bin:$PATH
+
+LABEL org.opencontainers.image.source https://github.com/thomasfaingnaert/llvm-docker-images
