@@ -47,6 +47,7 @@ for BUILD_TYPE, \
                 'EXTRA_CMAKE_ARGUMENTS': EXTRA_CMAKE_ARGUMENTS,
             })
 
+    print(f'Pushing image {image_name}...')
     client.images.push(image_name)
 
     end = time.time()
