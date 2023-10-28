@@ -36,7 +36,7 @@ for BUILD_TYPE, \
 
     start = time.time()
 
-    build_output_generator = client.build(
+    for line in client.build(
             path='./docker/',
             tag=image_name,
             rm=True,
@@ -47,17 +47,18 @@ for BUILD_TYPE, \
                 'ASSERTIONS_ENABLED': ASSERTIONS_ENABLED,
                 'LLVM_PROJECTS': LLVM_PROJECTS,
                 'EXTRA_CMAKE_ARGUMENTS': EXTRA_CMAKE_ARGUMENTS,
-            })
-
-    for output in build_output_generator:
-        json_output = json.loads(output)
-        if 'stream' in json_output:
-            if args.verbose:
-                tqdm.write(json_output['stream'], end='')
-
+            },
+            decode=True):
+        if args.verbose:
+            if 'stream' in line:
+                tqdm.write(line['stream'], end='')
 
     tqdm.write(f'Pushing image {image_name}...')
-    tqdm.write(client.push(image_name))
+
+    for line in client.push(image_name, stream=True, decode=True):
+        if args.verbose:
+            if 'stream' in line:
+                tqdm.write(line['stream'], end='')
 
     end = time.time()
 
