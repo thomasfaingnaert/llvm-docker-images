@@ -2,17 +2,19 @@
 
 import argparse
 import docker
+import json
 import time
 import tqdm
 from tqdm.contrib import itertools
 
-client = docker.from_env()
+client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 parser = argparse.ArgumentParser(
         prog='build-all-variants',
         description='Build all variants of LLVM images for a given version')
 
 parser.add_argument('llvm_version', help='The LLVM version to use. This can be anything that git clone --branch accepts, i.e. a branch, commit, tag, ...')
+parser.add_argument('-v', '--verbose', action='store_true')
 
 args = parser.parse_args()
 
@@ -34,7 +36,7 @@ for BUILD_TYPE, \
 
     start = time.time()
 
-    client.images.build(
+    build_output_generator = client.build(
             path='./docker/',
             tag=image_name,
             rm=True,
@@ -46,6 +48,13 @@ for BUILD_TYPE, \
                 'LLVM_PROJECTS': LLVM_PROJECTS,
                 'EXTRA_CMAKE_ARGUMENTS': EXTRA_CMAKE_ARGUMENTS,
             })
+
+    for output in build_output_generator:
+        json_output = json.loads(output)
+        if 'stream' in json_output:
+            if args.verbose:
+                print(json_output['stream'], end='')
+
 
     print(f'Pushing image {image_name}...')
     print(client.images.push(image_name))
