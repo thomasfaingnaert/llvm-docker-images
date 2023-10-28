@@ -57,7 +57,7 @@ for BUILD_TYPE, \
 
 
     tqdm.write(f'Pushing image {image_name}...')
-    tqdm.write(client.images.push(image_name))
+    tqdm.write(client.push(image_name))
 
     end = time.time()
 
