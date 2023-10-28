@@ -4,7 +4,7 @@ FROM $BASE_IMAGE AS builder
 # Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     cmake                                                               \
-    clang clang++                                                       \
+    clang                                                               \
     git                                                                 \
     lld                                                                 \
     ninja-build                                                         \
