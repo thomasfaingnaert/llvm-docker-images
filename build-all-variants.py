@@ -7,7 +7,7 @@ import time
 from tqdm import tqdm
 from tqdm.contrib import itertools
 
-client = docker.APIClient(base_url='unix://var/run/docker.sock')
+client = docker.from_env()
 
 parser = argparse.ArgumentParser(
         prog='build-all-variants',
@@ -36,7 +36,7 @@ for BUILD_TYPE, \
 
     start = time.time()
 
-    for line in client.build(
+    for line in client.api.build(
             path='./docker/',
             tag=image_name,
             rm=True,
@@ -55,10 +55,14 @@ for BUILD_TYPE, \
 
     tqdm.write(f'Pushing image {image_name}...')
 
-    for line in client.push(image_name, stream=True, decode=True):
+    for line in client.images.push(image_name, stream=True, decode=True):
         if args.verbose:
-            if 'stream' in line:
-                tqdm.write(line['stream'], end='')
+            if 'status' in line:
+                tqdm.write(str(line['status']), end='')
+            if 'progress' in line:
+                tqdm.write(' ' + str(line['progress']), end='')
+
+            tqdm.write('')
 
     end = time.time()
 
