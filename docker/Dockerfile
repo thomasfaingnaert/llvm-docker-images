@@ -8,8 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git                                                                 \
     lld                                                                 \
     ninja-build                                                         \
-    python3                                                             \
-    && rm -rf /var/lib/apt/lists/*
+    python3
 
 WORKDIR /tmp
 
