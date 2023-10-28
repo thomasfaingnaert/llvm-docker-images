@@ -4,7 +4,7 @@ import argparse
 import docker
 import json
 import time
-import tqdm
+from tqdm import tqdm
 from tqdm.contrib import itertools
 
 client = docker.APIClient(base_url='unix://var/run/docker.sock')
@@ -32,7 +32,7 @@ for BUILD_TYPE, \
 
     image_name = f'ghcr.io/thomasfaingnaert/llvm-clang:{FRIENDLY_LLVM_VERSION}-{BUILD_TYPE}{assertions_infix}{san_infix}'
 
-    print(f'Building image {image_name}...')
+    tqdm.write(f'Building image {image_name}...')
 
     start = time.time()
 
@@ -53,12 +53,12 @@ for BUILD_TYPE, \
         json_output = json.loads(output)
         if 'stream' in json_output:
             if args.verbose:
-                print(json_output['stream'], end='')
+                tqdm.write(json_output['stream'], end='')
 
 
-    print(f'Pushing image {image_name}...')
-    print(client.images.push(image_name))
+    tqdm.write(f'Pushing image {image_name}...')
+    tqdm.write(client.images.push(image_name))
 
     end = time.time()
 
-    print(f'Took {end-start} second(s).')
+    tqdm.write(f'Took {end-start} second(s).')
