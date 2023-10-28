@@ -2,8 +2,6 @@
 set -Eeuo pipefail
 set -x
 
-# Download and compile LLVM
-git clone --branch ${LLVM_VERSION} --depth 1 https://github.com/llvm/llvm-project
 pushd llvm-project
 
 mkdir build

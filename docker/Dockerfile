@@ -12,10 +12,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 WORKDIR /tmp
 
-COPY build-llvm.sh .
-
 # A branch, commit, tag, ... e.g. llvmorg-17.0.3
 ARG LLVM_VERSION=main
+
+# Download LLVM
+RUN git clone --branch ${LLVM_VERSION} --depth 1 https://github.com/llvm/llvm-project
+
+COPY build-llvm.sh .
 
 # For example, Release or Debug
 ARG BUILD_TYPE=Release
@@ -37,6 +40,7 @@ ENV ASSERTIONS_ENABLED=$ASSERTIONS_ENABLED
 ENV LLVM_PROJECTS=$LLVM_PROJECTS
 ENV EXTRA_CMAKE_ARGUMENTS=$EXTRA_CMAKE_ARGUMENTS
 
+# Compile LLVM
 RUN ./build-llvm.sh
 
 FROM $BASE_IMAGE
