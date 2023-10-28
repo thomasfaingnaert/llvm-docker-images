@@ -3,8 +3,8 @@ FROM $BASE_IMAGE AS builder
 
 # Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential                                                     \
     cmake                                                               \
+    clang clang++                                                       \
     git                                                                 \
     lld                                                                 \
     ninja-build                                                         \
@@ -30,6 +30,8 @@ ARG LLVM_PROJECTS=clang
 # Extra CMake arguments
 ARG EXTRA_CMAKE_ARGUMENTS
 
+ENV CC=/usr/bin/clang
+ENV CXX=/usr/bin/clang++
 ENV LLVM_VERSION=$LLVM_VERSION
 ENV BUILD_TYPE=$BUILD_TYPE
 ENV ASSERTIONS_ENABLED=$ASSERTIONS_ENABLED
