@@ -23,7 +23,7 @@ LLVM_PROJECTS = 'clang'
 for BUILD_TYPE, \
     (ASSERTIONS_ENABLED, assertions_infix), \
     (EXTRA_CMAKE_ARGUMENTS, san_infix) in itertools.product(
-            ['Release', 'RelWithDebInfo'],
+            ['Release'],
             [('OFF', ''), ('ON', '-asserts')],
             [('', ''), ('-DLLVM_USE_SANITIZER=Address', '-asan')]
             ):

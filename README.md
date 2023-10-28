@@ -16,7 +16,7 @@ The Dockerfile has the following build arguments:
 
 This repository already contains some pre-built Docker images based on Ubuntu 22.04 LTS that you can pull.
 
-They are named as follows: `ghcr.io/thomasfaingnaert/llvm-clang:<LLVM_VERSION>-<BUILD_TYPE>[-asserts][-asan]`.
-`LLVM_VERSION` is the version of LLVM (without the `llvmorg-` prefix), `BUILD_TYPE` can be either `Release` or `RelWithDebInfo`, and the optional `-asserts` and `-asan` infixes represent a build with assertions and Address Sanitizer enabled, respectively.
+They are named as follows: `ghcr.io/thomasfaingnaert/llvm-clang:<LLVM_VERSION>-Release[-asserts][-asan]`.
+`LLVM_VERSION` is the version of LLVM (without the `llvmorg-` prefix), and the optional `-asserts` and `-asan` infixes represent a build with assertions and Address Sanitizer enabled, respectively.
 
 For a full list of pre-built Docker images, see https://github.com/thomasfaingnaert/llvm-docker-images/pkgs/container/llvm-clang.
