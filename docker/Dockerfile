@@ -49,4 +49,8 @@ COPY --from=builder /opt/llvm /opt/llvm
 ENV LLVM_ROOT=/opt/llvm
 ENV PATH=$LLVM_ROOT/bin:$PATH
 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libxml2                                                             \
+    && rm -rf /var/lib/apt/lists/*
+
 LABEL org.opencontainers.image.source https://github.com/thomasfaingnaert/llvm-docker-images
